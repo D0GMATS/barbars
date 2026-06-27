@@ -1,13 +1,20 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Северные Варвары — turn based MMO RPG</title><link rel="stylesheet" href="/style.css"></head><body>
 <div id="app">
-  <section id="auth" class="auth card"><h1>Северные Варвары</h1><p>Оригинальная браузерная пошаговая MMO RPG: прокачка, локации, PvE, дуэли, магазин и чат.</p><div class="tabs"><button id="tabLogin" class="active">Вход</button><button id="tabReg">Регистрация</button></div><form id="authForm"><input id="username" placeholder="Логин" autocomplete="username" required><input id="heroName" placeholder="Имя героя (для регистрации)" class="hidden"><input id="password" placeholder="Пароль" type="password" autocomplete="current-password" required><button id="authBtn">Войти</button></form><p id="authError" class="error"></p></section>
+  <section id="auth" class="auth card">
+    <div class="brand"><div class="logo">ᛉ</div><div><h1>Северные Варвары</h1><p>Пошаговая MMO RPG: охота, арена, задания, добыча, чат и экипировка.</p></div></div>
+    <div class="tabs"><button id="tabLogin" class="active">Вход</button><button id="tabReg">Регистрация</button></div>
+    <form id="authForm"><label>Логин<input id="username" autocomplete="username" required></label><label id="heroLabel" class="hidden">Имя героя<input id="heroName"></label><label>Пароль<input id="password" type="password" autocomplete="current-password" required></label><button id="authBtn" class="primary">Войти</button></form>
+    <p id="authError" class="error"></p>
+  </section>
+
   <main id="game" class="hidden">
-    <header class="top"><div><h1>Северные Варвары</h1><span id="heroLine"></span></div><div class="topActions"><button onclick="api('/api/rest',{method:'POST'})">Отдохнуть</button><button onclick="logout()">Выйти</button></div></header>
+    <header class="top"><div class="brand compact"><div class="logo">ᛉ</div><div><h1>Северные Варвары</h1><span id="heroLine"></span></div></div><div class="topActions"><button onclick="api('/api/rest',{method:'POST'})">🏕️ Отдых</button><button onclick="logout()">Выйти</button></div></header>
+    <nav class="mobileNav"><button onclick="scrollToPanel('panelHero')">Герой</button><button onclick="scrollToPanel('panelWorld')">Мир</button><button onclick="scrollToPanel('panelBag')">Сумка</button><button onclick="scrollToPanel('panelSocial')">Чат</button></nav>
     <div class="grid">
-      <aside class="card"><h2>Герой</h2><div id="heroStats"></div><h3>Экипировка</h3><div id="equip"></div><h3>Свободные очки</h3><div class="statBtns"><button onclick="addStat('str')">+ Сила</button><button onclick="addStat('agi')">+ Ловкость</button><button onclick="addStat('con')">+ Выносливость</button></div></aside>
-      <section class="card"><h2>Карта</h2><div id="locations" class="locations"></div><div class="actions"><button onclick="startPve()">Охотиться</button><button onclick="joinPvp()">Встать в очередь арены</button><button onclick="leavePvp()">Покинуть очередь</button></div><div id="combat" class="combat muted">Нет активного боя.</div></section>
-      <section class="card"><h2>Инвентарь</h2><div id="inventory"></div><h2>Лавка</h2><div id="shop"></div></section>
-      <section class="card"><h2>Чат мира</h2><div id="chat"></div><form id="chatForm"><input id="chatInput" placeholder="Сообщение"><button>➤</button></form><h2>Рейтинг</h2><div id="leaderboard"></div></section>
+      <aside id="panelHero" class="card panel"><h2>Герой</h2><div id="heroStats"></div><h3>Экипировка</h3><div id="equip"></div><h3>Прокачка</h3><div class="statBtns"><button onclick="addStat('str')">+ Сила</button><button onclick="addStat('agi')">+ Ловкость</button><button onclick="addStat('con')">+ Выносливость</button></div></aside>
+      <section id="panelWorld" class="card panel"><div class="sectionHead"><h2>Мир</h2><span id="queueInfo" class="pill"></span></div><div id="locations" class="locations"></div><div class="actions"><button class="primary" onclick="startPve()">🗡️ Охотиться</button><button onclick="gather()">🧺 Сбор ресурсов</button><button onclick="joinPvp()">⚔️ Очередь арены</button><button class="ghost" onclick="leavePvp()">Покинуть очередь</button></div><div id="combat" class="combat muted">Нет активного боя.</div><h2>Задания</h2><div id="quests"></div></section>
+      <section id="panelBag" class="card panel"><div class="sectionHead"><h2>Сумка</h2><span id="bagCount" class="pill"></span></div><div id="inventory"></div><h2>Лавка</h2><div id="shop"></div></section>
+      <section id="panelSocial" class="card panel"><h2>Чат мира</h2><div id="chat"></div><form id="chatForm"><input id="chatInput" placeholder="Сообщение"><button>➤</button></form><h2>Рейтинг</h2><div id="leaderboard"></div></section>
     </div>
   </main>
   <div id="toast"></div>
