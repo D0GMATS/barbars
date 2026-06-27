@@ -19,6 +19,11 @@ const io = new Server(server, { cors: { origin: true } });
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(express.json({ limit: '1mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 const baseDb = { users: [], heroes: [], items: [], inventory: [], messages: [], combats: [], cooldowns: {} };
 let db = loadDb();
